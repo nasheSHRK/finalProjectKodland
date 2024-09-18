@@ -1,10 +1,11 @@
 # finalProjectKodland
-My Final project for Kodlands's Python Pro course
+Mi projecto final para el curso de Python Pro de Kodland
 
-This Discord Bot will be about Environmental issues caused by Global Warming and how to prevent/stop them
+Este bot sera sobre la contaminacion ambiental, el impacto de las industrias y demas
 
-## What commands does this bot have?
+## ¿Que comandos tiene este bot de Discord?
 
-- ?help : Displays the commands page
-- ?info : Sends into the chat a short text about global warming
-- ?revideo : Sends a Video about how to recycle certain plastic items (Bottles, Cups, etc)
+- !help : Muestra los comandos
+- !info : Envia videos de youtube sobre el cambio climatico y como reciclar
+- !revideo : Envia un video sobre como reciclar ciertos objetos (botellas, bolsas, cuadernos, cajas de helados y cajas de pasteles)
+- !ecotip : Envia un tip sobre como reducir tu impacto en el ambiente
