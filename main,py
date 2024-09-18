@@ -1,0 +1,105 @@
+import discord
+from discord.ext import commands
+
+from random import randint as rand
+
+intents = discord.Intents.default()
+intents.message_content = True
+description = '''
+Proyecto final de eldelgas31 para el curso de Python Pro en Kodland'''
+
+bot = commands.Bot(command_prefix='!', intents=intents, description=description)
+
+commandlist = {'ecotip':'''Envia un mensaje aleatorio sobre como cuidar al medioambiente''',
+               'info':'''Envia un Video aleatorio sobre reciclar y el medioambiente''',
+               'revideo':        '''Usa !help revideo para ver'''}
+
+@bot.remove_command('help')
+
+@bot.event
+async def on_ready():
+    print(f'We have logged in as {bot.user}')
+
+
+@bot.command()
+async def help(ctx, sel: str = commands.parameter(default='None', description='comando por seleccionar') ):
+    if sel in commandlist.keys() and sel != 'revideo':
+        embedVar = discord.Embed(title=f'Ayuda sobre el comando "{sel}":', description=commandlist[sel], color=0x3371ff)
+        await ctx.send(embed=embedVar)
+    elif sel == 'revideo':
+        embedVar = discord.Embed(title='Ayuda sobre el comando "revideo":', color=0x3371ff, description='''(args: item)
+Envia un Video sobre como reciclar un objeto
+        
+Lista de objetos:
+- botella
+- bolsa
+- cuaderno
+- helado
+- pastel (o torta pa' lo vio')
+
+Videos Hechos por eldelgas31
+
+Ejemplo: !revideo botella''')
+        await ctx.send(embed=embedVar)
+    else:
+        embedVar = discord.Embed(title="Comandos", description="Lista de comandos del bot", color=0x3371ff)
+        for i in commandlist:
+            embedVar.add_field(name=i, value=commandlist[i], inline=False)
+        await ctx.send(embed=embedVar)
+
+
+@bot.command()
+async def ecotip(ctx):
+    tips=['Almacena todos los elementos reciclables que utilizes y al fin de la semana depositalos en el contenedor de reciclaje mas cercano',
+        'No tires basura a la calle cuando no encuentras basureros, guardalo en tu bolsillo o en algun bolso hasta que encuentres un basurero',
+        'Intenta no hacer fuego si no es 100% necesario, el humo generado afecta a la capa de ozono',
+        'Usa desodorantes de bola en vez de spray, los desodorantes en lata sueltan gases dañinos para la capa de ozono al usarlos',
+        'No fumes, y si es que conoces a alguien que fuma, intenta convencerlos para que no fumen, debido a que los gases producidos por el cigarillo y el vape electronico afectan no solo a la capa de ozono, si no que tambien a las personas que estan alrededor y a la propia persona',
+        'La pagina de la ONU tiene un [articulo](https://www.un.org/es/climatechange/science/causes-effects-climate-change) que contiene los efectos y causas del calentamiento global']
+    
+    selectedtip = rand(0,5)
+    
+    await ctx.send(tips[selectedtip])
+
+@bot.command()
+async def info(ctx):
+    videos=['[+20 Manualidades con Botellas de plastico](https://youtu.be/xCaI-5WVRlY?si=8h1ryPk2NICNPMJt)',
+            '[Como se recicla el PET? (Plastico)](https://youtu.be/WOR0ytnVuB4?si=8X25UyHeQHjeCQHr)',
+            '[Contaminacion por plastico: o como estamos convirtiendo el mundo en plastico](https://youtu.be/RTRxZvVcjfM?si=TErPPp1HHdlZLBCl)',
+            '[El cambio Climatico (ONU)](https://youtu.be/2p1wuOX-bYQ?si=_4xX6_235gEJ2OIL)']
+    
+    selectedvideo = rand(0,3)
+
+    await ctx.send(videos[selectedvideo])
+
+@bot.command()
+async def revideo(ctx, item: str = commands.parameter(default='ninguno', description='Objeto seleccionado')):
+
+    bottle = '.\\tutorials\\skibidiflo.png'
+    bag = '.\\tutorials\\bag.mp4'
+    notebook = '.\\tutorials\\notebook.mp4'
+    icecream = '.\\tutorials\\icecream.mp4'
+    cake = '.\\tutorials\\cake.mp4'
+
+    tuts = {'botella':bottle, 'bolsa':bag, 'cuaderno':notebook, 'helado':icecream, 'pastel':cake}
+
+    if item in tuts:
+        try:
+            selectedtut = tuts[item.lower()]
+            file = discord.File(selectedtut)
+            await ctx.send(file = file)
+        except FileNotFoundError :
+            await ctx.send('Ha ocurrido un error interno, por favor contacta a eldelgas31 para informarle el problema (FileNotFoundError).')
+    elif item == 'ninguno':
+        selectedtut = 'Tienes que seleccionar un tutorial! Usa el comando !help revideo para ver la lista de objetos por seleccionar.'
+        await ctx.send(selectedtut)
+    else:
+        selectedtut = 'El tutorial que seleccionaste no existe, verifica los que existen usando !help revideo o revisa si lo escribiste bien.'
+        await ctx.send(selectedtut)
+
+@bot.command()
+async def test(ctx):
+    await ctx.send('not in use right now')
+
+
+bot.run("Pon el Token de tu bot aqui")
